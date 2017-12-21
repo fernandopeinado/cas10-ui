@@ -1,0 +1,51 @@
+{
+  "name": "cas10-ui",
+  "version": "0.0.1",
+  "description": "CAS10 UI",
+  "main": "dist/cas10-ui.js",
+  "dependencies": {
+    "axios": "0.17.1",
+    "bootstrap": "3.3.7",
+    "font-awesome": "4.7.0",
+    "highlight.js": "9.12.0",
+    "marked": "0.3.6",
+    "prop-types": "15.6.0",
+    "react": "15.6.2",
+    "react-bootstrap": "0.31.5",
+    "react-codemirror": "1.0.0",
+    "react-dom": "15.6.2",
+    "react-router": "4.2.0",
+    "react-router-dom": "4.2.2",
+    "react-select": "1.1.0",
+    "react-toastr": "2.9.5",
+    "toastr": "2.1.4"
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": "3.2.18",
+    "@storybook/addon-links": "3.2.18",
+    "@storybook/react": "3.2.18",
+    "babel-core": "6.26.0",
+    "babel-loader": "7.1.1",
+    "babel-plugin-react-docgen": "1.8.1",
+    "babel-plugin-syntax-async-functions": "6.13.0",
+    "babel-plugin-transform-class-properties": "6.24.1",
+    "babel-plugin-transform-object-rest-spread": "6.26.0",
+    "babel-plugin-transform-regenerator": "6.26.0",
+    "babel-polyfill": "6.26.0",
+    "babel-preset-env": "1.6.1",
+    "babel-preset-react": "6.24.1",
+    "css-loader": "0.28.7",
+    "file-loader": "1.1.6",
+    "style-loader": "0.19.1",
+    "webpack": "3.10.0",
+    "webpack-dev-server": "2.9.7",
+    "webpack-merge": "4.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack -p",
+    "dev": "webpack -p -progress --colors --watch",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  }
+}
