@@ -2,33 +2,70 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import introspector from '../Core/Introspector'
 
+/* Private */
+
+function treatUpperCaseValue(value, upperCase) {
+  if (value && upperCase) {
+    value = value.toUpperCase();
+  }
+  return value;
+}
+
+/**
+ * Caixa de Texto que armazena o dado preenchido em um Objeto raiz em uma determinada propriedade.
+ * 
+ * Uso básico:
+ * ~~~js
+ * <TextInput bean={data} name="user.name"></TextInput>
+ * ~~~
+ */
 export default class TextInput extends Component {
 
   static propTypes = {
+    /** 
+     * Raiz para os dados: estado, formulário, dto
+     */
     bean: PropTypes.object.isRequired,
+    /**
+     * O caminho para propriedade: nome, usuario.nome, usuario.permissoes[0].nome
+     */
     name: PropTypes.string.isRequired,
+    /**
+     * O tipo de input: text, password, email...
+     */
+    type: PropTypes.string,
+    /**
+     * O valor padrão para o campo quando ele for iniciado vazio
+     */
     defaultValue: PropTypes.string,
+    /**
+     * Informa se o campo está habilitado ou não
+     */
     disabled: PropTypes.bool,
+    /**
+     * Denota se este componente deve converter as informações digitadas para caixa alta
+     */
     upperCase: PropTypes.bool,
+    /**
+     * Tratador de eventos padrão
+     */
     onChange: PropTypes.func,
+    /**
+     * Tratador de eventos padrão
+     */
     onKeyPress: PropTypes.func
   };
 
   static defaultProps = {
+    type: "text",
     upperCase: false,
     defaultValue: "",
-    disabled: false,
-    onChange: () => {},
-    onKeyPress: () => {}
+    disabled: false
   };
   
-  treatUpperCaseValue = (value) => {
-    if (value && this.props.upperCase) {
-      value = value.toUpperCase();
-    }
-    return value;
-  }
-
+  /**
+   * Recupera o valor preenchido
+   */
   getValue = () => {
     let {
       bean,
@@ -36,9 +73,12 @@ export default class TextInput extends Component {
       defaultValue
     } = this.props;
     let value = introspector.getValue(bean, name, defaultValue);
-    return this.treatUpperCaseValue(value);
+    return treatUpperCaseValue(value, this.props.upperCase);
   }
 
+  /**
+   * Define um novo valor preenchido
+   */
   setValue = (value) => {
     let {
       bean,
@@ -46,21 +86,26 @@ export default class TextInput extends Component {
       onChange,
       upperCase
     } = this.props;
-    introspector.setValue(bean, name, this.treatUpperCaseValue(value));
+    introspector.setValue(bean, name, treatUpperCaseValue(value, this.props.upperCase));
   }
 
   onChangeHandler = (e) => {
     this.setValue(e.target.value);
-    this.props.onChange(e, this);
+    this.props.onChange ? this.props.onChange(e, this) : null;
     this.forceUpdate();
   }
   
   onKeyPressHandler = (e) => {
-    this.props.onKeyPress(e, this);
+    this.props.onKeyPress ? this.props.onKeyPress(e, this) : null;
   }
   
   render() {
     let {
+      bean,
+      name,
+      type,
+      defaultValue,
+      upperCase,
       onChange,
       onKeyPress,
       disabled,
@@ -71,7 +116,7 @@ export default class TextInput extends Component {
       dynprops.disabled = "disabled";
     }
     return (
-      <input type="text" 
+      <input type={type}
           className="form-control"
           value={this.getValue()}
           onChange={this.onChangeHandler}
