@@ -48,12 +48,19 @@ export default class TextInput extends Component {
     upperCase: PropTypes.bool,
     /**
      * Tratador de eventos padrão
+     * ```function(event, thisComponent) { }```
      */
     onChange: PropTypes.func,
     /**
      * Tratador de eventos padrão
+     * ```function(event, thisComponent) { }```
      */
-    onKeyPress: PropTypes.func
+    onKeyPress: PropTypes.func,
+    /**
+     * Tratador usado para tratar a tecla ENTER
+     * ```function(event, thisComponent) { }```
+     */
+    onKeyEnter: PropTypes.func
   };
 
   static defaultProps = {
@@ -95,6 +102,15 @@ export default class TextInput extends Component {
     this.forceUpdate();
   }
   
+  onKeyDownHandler = (e) => {
+    if (this.props.onKeyEnter) {
+      if (e.key === 'Enter' && e.shiftKey === false) {
+        e.preventDefault();
+        this.props.onKeyEnter(e, this);
+      }
+    }
+  }
+
   onKeyPressHandler = (e) => {
     this.props.onKeyPress ? this.props.onKeyPress(e, this) : null;
   }
@@ -108,6 +124,7 @@ export default class TextInput extends Component {
       upperCase,
       onChange,
       onKeyPress,
+      onKeyEnter,
       disabled,
       ...otherProps
     } = this.props;
@@ -120,6 +137,7 @@ export default class TextInput extends Component {
           className="form-control"
           value={this.getValue()}
           onChange={this.onChangeHandler}
+          onKeyDown={this.onKeyDownHandler}
           onKeyPress={this.onKeyPressHandler} 
           {...dynprops}
           {...otherProps}

@@ -65,5 +65,12 @@ storiesOf('Input', module)
           <TextInput bean={bean} name="sobrenome" upperCase={true}></TextInput>
         </div>
       </UseCase>
+      <UseCase title="onKeyEnter" description={`
+        <TextInput bean={bean} name="nome" onKeyEnter={(key, comp) => { /*...*/ }}></TextInput>
+        `}>
+        <div style={{padding: "10px"}}>
+          <TextInput bean={bean} name="nome" onKeyEnter={ action('onKeyEnter') }></TextInput>
+        </div>
+      </UseCase>
     </DocsContainer>
   );

@@ -29,6 +29,7 @@ export default class Button extends Component {
     disabled: PropTypes.bool,
     /** 
      * função chamada quando o botão é clicado. Recebe o evendo de clique. 
+     * ```function(nullableEvent, thisComponent) { }```
      */
     onClick: PropTypes.func.isRequired,
   };
@@ -53,7 +54,7 @@ export default class Button extends Component {
 
   onClickHandler = (e) => {
     this.setState({ isLoading: true });
-    var promise = this.props.onClick(e);
+    var promise = this.props.onClick(e, this);
     if (promise != null && promise.then != undefined) {
       promise.then(
         () => { if (!this.umounted) { this.setState({isLoading: false}); } },
