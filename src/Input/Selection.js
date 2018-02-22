@@ -1,23 +1,101 @@
-import React, { Component } from 'react';
+  import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import introspector from '../Core/Introspector';
 import messages from '../Core/Messages';
 import "react-select/dist/react-select.css";
 
+/**
+ * Caixa de Seleção com autocomplete.
+ * 
+ * Uso básico:
+ * ~~~js
+ * <Selection bean={bean} name="sexo" loadOptions={sexos} autoload={true}></Selection>
+ * ~~~
+ */
 export default class Selection extends Component {
   static propTypes = {
+    /** 
+     * Raiz para os dados: estado, formulário, dto
+     */
     bean: PropTypes.object.isRequired,
+    /**
+     * O caminho para propriedade: nome, usuario.nome, usuario.permissoes[0].nome
+     */
     name: PropTypes.string.isRequired,
+    /**
+     * O valor padrão para o campo quando ele for iniciado vazio
+     */
     defaultValue: PropTypes.string,
+    /**
+     * Estipula a duração do intervalo de espera, relativo ao ultimo caracter modificado, para realizar uma nova busca.
+     * Esse tempo é medido em milisegundos.
+     */
     delay: PropTypes.number,
+    /**
+     * Informa se o campo está habilitado ou não
+     */
     disabled: PropTypes.bool,
+    /**
+     * Estipula o tamanho mínimo do texto digitado em caracteres, para que a busca seja disparada.
+     */
     threshold: PropTypes.number,
+    /**
+     * Define se as opções devem ser carregadas inicialmente mesmo que não haja digitação de texto. Essa opção não é
+     * recomendada para caixas de seleção com muitas opções, e que o carregamento possa vir a ser pesado.
+     */
     autoload: PropTypes.bool,
+    /**
+     * Função que define como as opções serão carregadas.
+     * ~~~js
+     * function loadOptions() {
+     *   return Promise.resolve([
+     *      { label: "MASCULINO", value: "M" },
+     *      { label: "FEMININO", value: "F" },
+     *      { label: "INDETERMINADO", value: "I" } 
+     *    ]);
+     * }
+     * 
+     * function loadOptionsInput(input) {
+     *   // Chama uma url com querystring param input, e que devolve um json array com as opções
+     *   return axios.get(url, {
+     *      params: {
+     *        input: input
+     *      }
+     *   }).then(response => response.data);
+     * }
+     * ~~~
+     */
     loadOptions: PropTypes.func.isRequired,
+    /**
+     * Se a procura deve ignorar a caixa da letra. Se sim, que é o defaul, o input será passado sempre em minusculo para 
+     * a função loadOptions.
+     */
+    ignoreCase: PropTypes.bool,
+    /**
+     * Se a procura deve ignorar acentos. Se sim, que é o defaul, o input será passado sempre sem acentos para 
+     * a função loadOptions.
+     */
+    ignoreAccents: PropTypes.bool,
+    /**
+     * Tratador de eventos padrão
+     * ```function(event, thisComponent) { }```
+     */
     onChange: PropTypes.func,
+    /**
+     * Tratador de eventos padrão
+     * ```function(event, thisComponent) { }```
+     */
     onKeyPress: PropTypes.func,
+    /**
+     * Define qual propriedade ou qual função deve ser usada sobre as opções listadas para extrair o label.
+     * Default: ```(option) => option.label```
+     */
     optionLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    /**
+     * Define qual propriedade ou qual função deve ser usada sobre as opções listadas para extrair o valor.
+     * Default: ```(option) => option.value```
+     */
     optionValue: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
   }
   
@@ -27,6 +105,8 @@ export default class Selection extends Component {
     threshold: 3,
     defaultValue: "",
     disabled: false,
+    ignoreCase: true,
+    ignoreAccents: true,
     onChange: () => {},
     onKeyPress: () => {}
   };
@@ -145,9 +225,18 @@ export default class Selection extends Component {
       bean,
       name,
       autoload,
-      disabled
+      disabled,
+      threshold,
+      ignoreCase,
+      ignoreAccents
     } = this.props;
-    let selected = this.toOption(introspector.getValue(bean, name, {value: "", label: "Selecione..."}));
+
+    let placeholder = "Selecione...";
+    if (!autoload && threshold > 1) {
+      placeholder = placeholder + " (digite pelo menos " + threshold + " caracteres para iniciar a busca)"
+    }
+
+    let selected = this.toOption(introspector.getValue(bean, name, {value: "", label: placeholder}));
     let options = this.options;
     if (options == undefined || options.length == 0) {
       options = [selected];
@@ -163,9 +252,11 @@ export default class Selection extends Component {
            onKeyPress={this.onKeyPressHandler}      
            loadingPlaceholder="Carregando..."
            searchPromptText="Digite para Procurar"  
-           placeholder="Selecione..."
+           placeholder={placeholder}
            noResultsText="Sem Resultados"
            matchProp="label"
+           ignoreCase={ignoreCase}
+           ignoreAccents={ignoreAccents}
          />
     )
   }

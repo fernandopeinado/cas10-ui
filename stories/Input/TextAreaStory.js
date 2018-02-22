@@ -10,8 +10,6 @@ import TextArea from '../../src/Input/TextArea';
 
 export default {};
 
-console.log(TextArea.__docgenInfo);
-
 function sleepWait(e) {
   return new Promise((resolve) => setTimeout(resolve, 2500));
 }

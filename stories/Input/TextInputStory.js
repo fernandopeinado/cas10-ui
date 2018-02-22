@@ -10,8 +10,6 @@ import TextInput from '../../src/Input/TextInput';
 
 export default {};
 
-console.log(TextInput.__docgenInfo);
-
 function sleepWait(e) {
   return new Promise((resolve) => setTimeout(resolve, 2500));
 }
