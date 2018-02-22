@@ -14,6 +14,14 @@ marked.setOptions({
 
 const renderer = new marked.Renderer();
 
+/**
+ * Espaço de texto rico, não editável, com sintaxe Markdown Github
+ * 
+ * Uso básico:
+ * ~~~js
+ * <MarkdownViewer content={content}></MarkdownViewer>
+ * ~~~
+ */
 export default class MarkdownViewer extends Component {
     render() {
         const { 

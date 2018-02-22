@@ -2,6 +2,10 @@ let isFunction = function(obj) {
   return typeof obj == 'function' || false;
 };
 
+/**
+ * Classe base para construção de estados ou serviços que precisem gerar eventos para que os interessados reajam.
+ * Construído nos moldes do EventEmitter do nodejs.
+ */
 export default class EventEmitter {  
   
   constructor() {

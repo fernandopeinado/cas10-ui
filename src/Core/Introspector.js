@@ -1,3 +1,9 @@
+/**
+ * Utilitário para navegar em propriedades de objetos de uma forma mais fácil, usando expressão texto do caminho:
+ * ```obj.pessoa.nome``` ou ```obj.pessoa.telefone[0].numero``` e etc.
+ * 
+ * Esta classe é exportada como um serviço singleton
+ */
 class Introspector {
   
   getValue(object, path, defaultValue) {    
