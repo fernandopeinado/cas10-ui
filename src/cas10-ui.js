@@ -29,4 +29,39 @@ import PagedTable from './Table/PagedTable';
 import Table from './Table/Table';
 
 // React Bootstrap
-import Bootstrap from 'react-bootstrap';
+import * as rb from 'react-bootstrap';
+
+export {
+    // Button
+    Button,
+
+    // Core
+    EventEmitter,
+    Introspector,
+    Messages,
+
+    // Crud
+    BaseCrudView,
+    CrudService,
+
+    // Display
+    Markdown,
+
+    // Input
+    Checkbox,
+    OptionsSelection,
+    Selection,
+    TextArea,
+    TextInput,
+
+    // Layout
+    MessageToastr,
+    UserInterface,
+
+    // Table
+    PagedTable,
+    Table,
+
+    // React Bootstrap
+    rb
+}

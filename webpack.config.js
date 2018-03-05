@@ -1,9 +1,8 @@
 var webpack = require('webpack');
 var path = require('path');
 
-let libraryName = 'cas10-ui';
-let outputFile = libraryName + '.js';
-
+let libraryName = 'cas10';
+let outputFile = 'cas10-ui.js';
 
 module.exports = {
     entry: {

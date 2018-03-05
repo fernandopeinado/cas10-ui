@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import * as Bootstrap from 'react-toastr';
+import { ToastContainer, ToastMessage } from 'react-toastr';
 import messages from "../Core/Messages"
 import 'toastr/build/toastr.min.css';
 
