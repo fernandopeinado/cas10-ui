@@ -246,6 +246,7 @@ export default class Selection extends Component {
            autoload={autoload}
            disabled={disabled}
            value={selected.value}
+           cache={false}
            options={options}
            onChange={this.onChangeHandler}
            loadOptions={this.loadOptionsHandler} 

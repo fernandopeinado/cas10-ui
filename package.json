@@ -16,7 +16,7 @@
     "react-dom": "15.6.2",
     "react-router": "4.2.0",
     "react-router-dom": "4.2.2",
-    "react-select": "1.1.0",
+    "react-select": "1.2.1",
     "react-toastr": "2.9.5",
     "toastr": "2.1.4"
   },
