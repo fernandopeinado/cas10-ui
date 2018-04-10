@@ -38,7 +38,9 @@ export {
     // Core
     EventEmitter,
     Introspector,
+    introspector,
     Messages,
+    messages,
 
     // Crud
     BaseCrudView,
