@@ -25,14 +25,14 @@ storiesOf('Input', module)
   .add('TextArea', () => 
     <DocsContainer component={TextArea}>
       <UseCase title="Basico" description={`
-        <TextArea bean={bean} name="texto"></TextArea>
+        <TextArea bean={bean} name="texto" rows={10}></TextArea>
 
         bean = {
           texto: null
         }
         `}>
         <div style={{padding: "10px"}}>
-          <TextArea bean={bean} name="texto"></TextArea>
+          <TextArea bean={bean} name="texto" rows={10}></TextArea>
         </div>
       </UseCase>
       <UseCase title="Upper Case" description={`

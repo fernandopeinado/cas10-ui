@@ -4,16 +4,56 @@ import Select from 'react-select';
 import introspector from '../Core/Introspector';
 import messages from '../Core/Messages';
 
+/**
+ * Caixa de Seleção simples.
+ * 
+ * Uso básico:
+ * ~~~js
+ * <OptionsSelection bean={bean} name="sexo" options={sexos}></Selection>
+ * ~~~
+ */
 export default class OptionsSelection extends Component {
+
   static propTypes = {
+    /** 
+     * Raiz para os dados: estado, formulário, dto
+     */
     bean: PropTypes.object.isRequired,
+    /**
+     * O caminho para propriedade: nome, usuario.nome, usuario.permissoes[0].nome
+     */
     name: PropTypes.string.isRequired,
+    /**
+     * O valor padrão para o campo quando ele for iniciado vazio
+     */
     defaultValue: PropTypes.string,
+    /**
+     * Informa se o campo está habilitado ou não
+     */
     disabled: PropTypes.bool,
+    /**
+     * As opções fixas que serão mostradas
+     */
     options: PropTypes.array.isRequired,
+    /**
+     * Tratador de eventos padrão
+     * ```function(event, thisComponent) { }```
+     */
     onChange: PropTypes.func,
+    /**
+     * Tratador de eventos padrão
+     * ```function(event, thisComponent) { }```
+     */
     onKeyPress: PropTypes.func,
+    /**
+     * Define qual propriedade ou qual função deve ser usada sobre as opções listadas para extrair o label.
+     * Default: ```(option) => option.label```
+     */
     optionLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    /**
+     * Define qual propriedade ou qual função deve ser usada sobre as opções listadas para extrair o valor.
+     * Default: ```(option) => option.value```
+     */
     optionValue: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
   }
 

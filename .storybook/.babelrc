@@ -1,13 +1,7 @@
 {
   "presets": [
     "env", 
-    "react"
-  ],
-  "plugins": [
-    "transform-class-properties", 
-    "transform-object-rest-spread", 
-    "syntax-async-functions", 
-    "transform-regenerator", 
-    "react-docgen"
+    "react",
+    "stage-2"
   ]
 }

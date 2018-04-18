@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import introspector from '../Core/Introspector';
 import CodeMirror from 'react-codemirror';
+import './TextArea.css'
 import 'codemirror/mode/yaml/yaml';
 import 'codemirror/mode/shell/shell';
 import 'codemirror/mode/jinja2/jinja2';
@@ -58,6 +59,11 @@ export default class TextArea extends Component {
      * ```css, groovy, htmlmixed, javascript, jinja2, markdown, shell, sql, yaml, xml```
      */
     mode: PropTypes.string,
+    /**
+     * O numero de linhas que uma caixa de texto deve ter. Funciona apenas para caixas simples, sem modo
+     * definido.
+     */
+    rows: PropTypes.number,
     /**
      * Se deve ou não mostrar o número da linha no editor
      */
@@ -116,20 +122,29 @@ export default class TextArea extends Component {
       onKeyPress,
       disabled,
       mode,
-      showLineNumbers
+      showLineNumbers,
+      bean,
+      name,
+      defaultValue,
+      upperCase,
+      ...otherProps
     } = this.props;
-    let dynprops = {}
+    let dynprops = { ...otherProps }
     if (disabled) {
       dynprops.disabled = "disabled";
     }
     return (
       <div className="form-control" style={{height: "initial"}}>
-        <CodeMirror
+        {mode ? 
+          <CodeMirror            
             value={this.getValue()}
             onChange={this.onChangeHandler}
-            options={{mode: mode, lineNumbers: showLineNumbers }}          
+            options={{mode: mode, lineNumbers: showLineNumbers }}   
             {...dynprops}
             />
+        :  
+          <textarea onChange={this.onChangeHandler} {...dynprops}>{this.getValue()}</textarea>
+        }
       </div>
     )
   }
