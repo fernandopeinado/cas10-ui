@@ -1,8 +1,8 @@
 {
   "name": "cas10",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "CAS10",
-  "main": "src/cas10.js",
+  "main": "lib/cas10.js",
   "peerDependencies": {
     "react": "^0.14.9 || >=15.3.0",
     "react-dom": "^0.14.9 || >=15.3.0"
@@ -26,6 +26,7 @@
     "@storybook/addon-actions": "3.3.14",
     "@storybook/addon-links": "3.3.14",
     "@storybook/react": "3.3.14",
+    "babel-cli": "^6.26.0",
     "babel-core": "6.26.0",
     "babel-loader": "7.1.4",
     "babel-plugin-react-docgen": "1.9.0",
@@ -45,7 +46,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack -p",
+    "build": "npm run build:babel && npm run build:webpack",
+    "build:webpack" : "webpack -p",
+    "build:babel" : "babel src --source-maps --out-dir lib",
     "dev": "webpack -p -progress --colors --watch",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
