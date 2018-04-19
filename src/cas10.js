@@ -3,8 +3,8 @@ import Button from './Button/Button';
 
 // Core
 import EventEmitter from './Core/EventEmitter';
-import Introspector from './Core/Introspector';
-import Messages from './Core/Messages';
+import introspector from './Core/Introspector';
+import messages from './Core/Messages';
 
 // Crud
 import BaseCrudView from './Crud/BaseCrudView';
@@ -37,9 +37,7 @@ export {
 
     // Core
     EventEmitter,
-    Introspector,
     introspector,
-    Messages,
     messages,
 
     // Crud
