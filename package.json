@@ -1,6 +1,6 @@
 {
   "name": "cas10",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "CAS10",
   "main": "lib/cas10.js",
   "peerDependencies": {
@@ -48,7 +48,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build:babel && npm run build:webpack",
     "build:webpack" : "webpack -p",
-    "build:babel" : "babel src --source-maps --out-dir lib",
+    "build:babel" : "babel src --source-maps --copy-files --out-dir lib",
     "dev": "webpack -p -progress --colors --watch",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
