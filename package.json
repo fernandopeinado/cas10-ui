@@ -37,8 +37,8 @@
     "babel-preset-stage-2": "6.24.1",
     "css-loader": "0.28.11",
     "file-loader": "1.1.11",
-    "react": "15.6.2",
-    "react-dom": "15.6.2",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "style-loader": "0.20.3",
     "webpack": "3.11.0",
     "webpack-dev-server": "2.11.2",
@@ -47,8 +47,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build:babel && npm run build:webpack",
-    "build:webpack" : "webpack -p",
-    "build:babel" : "babel src --source-maps --copy-files --out-dir lib",
+    "build:webpack": "webpack -p",
+    "build:babel": "babel src --source-maps --copy-files --out-dir lib",
     "dev": "webpack -p -progress --colors --watch",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"

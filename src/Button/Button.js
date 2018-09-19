@@ -3,6 +3,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as Bootstrap from 'react-bootstrap';
+import { relative } from 'path';
 
 /**
  * Botão com suporte a trava de duplo clique e informação visual de carregando.
@@ -77,6 +78,11 @@ export default class Button extends Component {
     } = this.props;
     let isLoading = this.state.isLoading;
 
+    let styleChildren = {}
+    if (isLoading) {
+      styleChildren = { visibility: "hidden" }
+    }
+
     return (
       <Bootstrap.Button 
           bsStyle={bsStyle}
@@ -84,8 +90,12 @@ export default class Button extends Component {
           disabled={disabled || isLoading}              
           onClick={!isLoading ? this.onClickHandler : null}
           {...otherProps} >
-          {!isLoading && children} 
-          {isLoading && <i className="fa fa-spinner fa-spin fa-fw"></i>}
+            <div style={{position: "relative"}}>
+              <div style={styleChildren}>{children}</div>
+              <div style={{position: "absolute", top: "0", bottom: "0", left: "0", right: "0" }}>
+                {isLoading && <i className="fa fa-spinner fa-spin fa-fw"></i>}
+              </div>
+            </div>
       </Bootstrap.Button>
     );
   }
