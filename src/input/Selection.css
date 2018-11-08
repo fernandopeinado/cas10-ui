@@ -1,0 +1,62 @@
+.Selection.Select.is-focused:not(.is-open).form-control > .Select-control,
+.MultipleSelection.Select.is-focused:not(.is-open).form-control > .Select-control {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.Selection.Select.is-focused:not(.is-open).form-control,
+.MultipleSelection.Select.is-focused:not(.is-open).form-control {
+  border-color: #66afe9;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6)
+}
+
+.MultipleSelection.Select.has-value.Select--single > .Select-control .Select-value a.Select-value-label:hover,
+.MultipleSelection.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:hover,
+.MultipleSelection.Select.has-value.Select--single > .Select-control .Select-value a.Select-value-label:focus,
+.MultipleSelection.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:focus {
+  color: #66afe9;
+}
+
+.Selection .Select-control,
+.MultipleSelection .Select-control {
+  height: 34px;
+  /* box-shadow: inset 0 1px 1px rgba(0,0,0,.075); */
+  background-color: transparent;
+  border: 0px;
+}
+
+.MultipleSelection.Select--multi .Select-value {
+  color: #333;
+  background-color: #f5f5f5;
+  font-size: 14px;
+  line-height: 18px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  display: block;
+}
+
+.MultipleSelection.Select--multi a.Select-value-label {
+  color: #66afe9;
+}
+
+.MultipleSelection.Select--multi .Select-value-icon {
+  border-right: 1px solid #ccc;
+}
+
+.Selection.form-control,
+.MultipleSelection.form-control {
+  padding: 0px;
+  height: initial;
+}
+
+.Selection .Select-input > input,
+.MultipleSelection.Select--multi .Select-input > input {
+  line-height: 18px;
+  padding: 8px 0 8px 0;
+}
+
+.MultipleSelection.Select--multi .Select-multi-value-wrapper {
+  display: block;
+  width: calc(100% - 20px);
+}

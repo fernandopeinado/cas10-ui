@@ -1,17 +1,18 @@
-var webpack = require('webpack');
-var path = require('path');
-
-let libraryName = 'cas10';
-let outputFile = 'cas10.js';
+const webpack = require('webpack');
+const path = require('path');
+const PeerDepsExternalsPlugin = require('peer-deps-externals-webpack-plugin');
+ 
+const libraryName = 'cas10';
+const outputFile = 'cas10.js';
 
 module.exports = {
     entry: {
-        'cas10': './src/cas10.js'
+        'cas10': './src/index.js'
     },
     output: {
         filename: outputFile,
-        library: libraryName,
-        libraryTarget: 'umd',
+            library: libraryName,
+            libraryTarget: 'umd',
         umdNamedDefine: true,
         path: path.join(__dirname, "dist"),
     },
@@ -22,22 +23,14 @@ module.exports = {
         ]
     },
     devtool: "source-map",
-    externals: {
-        // Use external version of React
-        "react": "React",
-        "react-dom": "ReactDOM"
-    },
+    plugins: [
+        new PeerDepsExternalsPlugin(),
+    ],
     module: {
         rules: [{
-                test: /\.js$/,
+                test: /\.js(x)?$/,
                 exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['env', 'react', 'stage-2'],
-                        plugins: ['transform-decorators-legacy']
-                    }
-                }
+                use: [ 'babel-loader' ]
             },
             {
                 test: /\.css$/,
@@ -60,11 +53,6 @@ module.exports = {
                         name: 'fonts/[name].[ext]'
                     }
                 }
-            },
-            {
-                test: /\.html$/,
-                exclude: /node_modules/,
-                loader: 'raw'
             }
         ]
     }

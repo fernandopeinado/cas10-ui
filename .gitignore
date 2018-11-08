@@ -1,3 +1,5 @@
+.cache
+/stories/_docs
 dist
 lib
 storybook-static
