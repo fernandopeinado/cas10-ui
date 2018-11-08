@@ -2,7 +2,24 @@ import 'font-awesome/css/font-awesome.min.css';
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import injectSheet from 'react-jss';
 import RBButton from 'react-bootstrap/lib/Button';
+
+const styles = {
+  container: {
+    position: 'relative'
+  },
+  spinnerContainer: {
+    position: 'absolute', 
+    top: 0, 
+    bottom: 0, 
+    left: 0, 
+    right: 0  
+  },
+  spinnerIcon: {
+    composes: ['fa', 'fa-spinner', 'fa-spin', 'fa-fw']
+  }
+}
 
 /**
  * Botão com suporte a trava de duplo clique e informação visual de carregando.
@@ -12,19 +29,20 @@ import RBButton from 'react-bootstrap/lib/Button';
  * <Button>Label</Button>
  * ~~~
  */
+@injectSheet(styles)
 export default class Button extends Component {
 
   static propTypes = {
     /** 
-     * Estilo bootstrap do botão: *default*, *primary*, *success*, *info*, *warning*, *danger*, *link*
+     * Estilo do botão
      */
-    bsStyle: PropTypes.string,
+    bsStyle: PropTypes.oneOf(['default', 'primary', 'success', 'info', 'warning', 'danger', 'link']),
     /** 
-     * Tamanho bootstrap do botão: *large*, *small*, *xsmall*
+     * Tamanho do botão
      */
-    bsSize: PropTypes.string,
+    bsSize: PropTypes.oneOf(['large', 'small', 'xsmall']),
     /**
-     * se o botão está ou não habilitado: *true*, *false*
+     * se o botão está ou não habilitado
      */
     disabled: PropTypes.bool,
     /** 
@@ -37,11 +55,7 @@ export default class Button extends Component {
   static defaultProps = {
     bsStyle: "default",
     disabled: false,
-    onClick: (event) => {
-      if (event != null) {
-        event.stopPropagation();
-      }
-    },
+    onClick: (event) => event && event.stopPropagation() && null
   };
 
   constructor(props) {
@@ -54,6 +68,9 @@ export default class Button extends Component {
     this.umounted = true;
   }
 
+  /**
+   * Ativa o clique do botão, sem um evento específico
+   */
   click = () => {
     this.onClickHandler(null);
   }
@@ -73,34 +90,31 @@ export default class Button extends Component {
   }
 
   render() {
-    let {
+    const {
       children,
       disabled,
       onClick,
       bsSize,
       bsStyle,
+      classes,
       ...otherProps
     } = this.props;
-    let isLoading = this.state.isLoading;
-
-    let styleChildren = {}
-    if (isLoading) {
-      styleChildren = { visibility: "hidden" }
-    }
+    
+    const { isLoading } = this.state;
+    const styleChildren = isLoading ? { visibility: "hidden" } : {}
 
     return (
-      <RBButton
+      <RBButton {...otherProps}
           bsStyle={bsStyle}
           bsSize={bsSize}
-          disabled={disabled || isLoading}              
-          onClick={!isLoading ? this.onClickHandler : null}
-          {...otherProps} >
-            <div style={{position: "relative"}}>
-              <div style={styleChildren}>{children}</div>
-              <div style={{position: "absolute", top: "0", bottom: "0", left: "0", right: "0" }}>
-                {isLoading && <i className="fa fa-spinner fa-spin fa-fw"></i>}
-              </div>
-            </div>
+          disabled={disabled || isLoading}
+          onClick={!isLoading ? this.onClickHandler : null} >
+        <div className={classes.container}>
+          <div style={styleChildren}>{children}</div>
+          <div className={classes.spinnerContainer}>
+            {isLoading && <i className={classes.spinnerIcon}></i>}
+          </div>
+        </div>
       </RBButton>
     );
   }

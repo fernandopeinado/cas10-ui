@@ -1,4 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
+import injectSheet from 'react-jss';
+
+const styles = {
+  separator: {
+    composes: ['btn-group', 'toolbar-separator'],
+    padding: [6, 0],
+    marginLeft: [10, "!important"],
+    marginRight: 5
+  }
+}
 
 /**
  * Separador de botões em uma toolbar
@@ -8,15 +18,10 @@ import React, { Component } from 'react';
  * <ButtonToolbarSeparator/>
  * ~~~
  */
-export default class ButtonToolbarSeparator extends Component {
-
+@injectSheet(styles)
+export default class ButtonToolbarSeparator extends React.Component {
   render() {
-    var text = this.props.children || "\u0020";
-    var style = {
-      padding: "6px 0px",
-      marginLeft: "10px",
-      marginRight: "5px"
-    }
-    return <div className="btn-group toolbar-separator" style={style}>{text}</div>;
+    const text = this.props.children || "\u0020";
+    return <div className={this.props.classes.separator}>{text}</div>
   }
 }

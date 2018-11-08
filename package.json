@@ -67,7 +67,7 @@
     "build:babel": "babel src --source-maps --copy-files --out-dir lib ",
     "build:copy-files": "node ./scripts/copy-files.js",
     "build:docs": "node ./scripts/docgen.js",
-    "build:webpack": "webpack -p",
+    "build:webpack": "webpack -p --progress",
     "dev": "yarn dev:babel",
     "dev:babel": "babel src -w --source-maps --copy-files --out-dir lib ",
     "dev:webpack": "webpack -p -progress --colors --watch",

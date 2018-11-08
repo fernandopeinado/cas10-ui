@@ -33,6 +33,7 @@ class Introspector {
   }
   
   setValue(object, path, value) {
+    var originalObject = object;
     if (object != undefined) { 
       path = path.replace(/\[([^\[]+)\]/g, '.$1'); // convert indexes to properties
       path = path.replace(/^\./, '');           // strip a leading dot

@@ -1,7 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import injectSheet from 'react-jss';
 import introspector from '../core/Introspector'
 
+const styles = {
+  formControl: {
+    composes: ['form-control'],
+    padding: 0, 
+    width: 18, 
+    height: 18, 
+    lineHeight: '16px', 
+    margin: [8, 0], 
+    textAlign: "center", 
+    borderRadius: 0
+  },
+  yesIcon: {
+    composes: ['fa', 'fa-check'],
+    color: 'green', 
+    fontSize: 14
+  },
+  noIcon: {
+    composes: ['fa', 'fa-close'],
+    color: 'red', 
+    fontSize: 14
+  }
+}
 /**
  * Input para valores booleanos de 2 ou 3 estados
  * 
@@ -10,6 +33,7 @@ import introspector from '../core/Introspector'
  * <BooleanInput bean={data} name="user.name"></BooleanInput>
  * ~~~
  */
+@injectSheet(styles)
 export default class BooleanInput extends Component {
 
   static propTypes = {
@@ -22,9 +46,9 @@ export default class BooleanInput extends Component {
      */
     name: PropTypes.string.isRequired,
     /**
-     * O tipo de input: bistate (default) ou tristate
+     * O tipo de input
      */
-    type: PropTypes.string,
+    type: PropTypes.oneOf(['bistate', 'tristate']),
     /**
      * O valor padrão para o campo quando ele for iniciado vazio
      */
@@ -80,11 +104,11 @@ export default class BooleanInput extends Component {
   setValue = (value) => {
     let {
       bean,
-      name,
-      onChange,
-      upperCase
+      name
     } = this.props;
     introspector.setValue(bean, name, value);
+    this.props.onChange ? this.props.onChange(e, this) : null;
+    this.forceUpdate();
   }
 
   onChangeHandler = (e) => {
@@ -128,8 +152,6 @@ export default class BooleanInput extends Component {
     else {
       this.setValue(!value);
     }
-    this.props.onChange ? this.props.onChange(e, this) : null;
-    this.forceUpdate();
   }
   
   render() {
@@ -143,6 +165,7 @@ export default class BooleanInput extends Component {
       onKeyPress,
       onKeyEnter,
       disabled,
+      classes,
       ...otherProps
     } = this.props;
     let dynprops = {}
@@ -151,17 +174,14 @@ export default class BooleanInput extends Component {
     }
     var value = this.getValue();
     return (
-      <div className="form-control" 
-          tabIndex={tabIndex}
-          style={{ padding: "0px", width: "18px", height: "18px", lineHeight: "16px", margin: "8px 0px", textAlign: "center", borderRadius: "0px" }} 
+      <div {...otherProps} 
+          className={classes.formControl}
+          tabIndex={tabIndex}          
           onClick={this.onClickHandler}
           onKeyDown={this.onKeyDownHandler}>
           {(type == "tristate" && value == null) ? null : 
-            value ? 
-              <i className="fa fa-check" style={{color: "green", fontSize: "14px"}}/> 
-              :
-              <i className="fa fa-close" style={{color: "red", fontSize: "14px"}}/>
-          }    
+            value ? <i className={classes.yesIcon} /> :<i className={classes.noIcon}/>
+          }
       </div>      
     )
   }
