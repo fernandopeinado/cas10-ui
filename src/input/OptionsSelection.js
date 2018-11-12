@@ -148,12 +148,13 @@ export default class OptionsSelection extends Component {
     } = this.state;
     let selected = this.toOption(introspector.getValue(bean, name, {value: "", label: "Selecione..."}));
     return (
-      <Select disabled={disabled}
-           value={selected.value}
-           options={options}
-           onChange={this.onChangeHandler}
-           onKeyPress={this.onKeyPressHandler}      
-           placeholder="Selecione..."
+      <Select className="Selection form-control" 
+            disabled={disabled}
+            value={selected.value}
+            options={options}
+            onChange={this.onChangeHandler}
+            onKeyPress={this.onKeyPressHandler}      
+            placeholder="Selecione..."
          />
     )
   }
