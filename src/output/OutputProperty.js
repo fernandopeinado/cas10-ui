@@ -38,12 +38,12 @@ export default class OutputProperty extends Component {
      * true se for para mostrar a data. 
      * Se dateFormat e timeFormat forem null ou true a data completa será mostrada
      */
-    dateFormat: PropTypes.bool,
+    date: PropTypes.bool,
     /**
      * true se for mostrar o horário. 
      * Se dateFormat e timeFormat forem null ou true a data completa será mostrada
      */
-    timeFormat: PropTypes.bool,
+    time: PropTypes.bool,
   };
 
   render() {

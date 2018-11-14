@@ -12,7 +12,10 @@ const styles = {
     lineHeight: '16px', 
     margin: [8, 0], 
     textAlign: "center", 
-    borderRadius: 0
+    borderRadius: 0,
+    'table &': {
+      margin: [0]
+    }
   },
   yesIcon: {
     composes: ['fa', 'fa-check'],
@@ -104,11 +107,11 @@ export default class BooleanInput extends Component {
   setValue = (value) => {
     let {
       bean,
-      name
+      name,
+      onChange,
+      upperCase
     } = this.props;
     introspector.setValue(bean, name, value);
-    this.props.onChange ? this.props.onChange(e, this) : null;
-    this.forceUpdate();
   }
 
   onChangeHandler = (e) => {
@@ -152,6 +155,8 @@ export default class BooleanInput extends Component {
     else {
       this.setValue(!value);
     }
+    this.props.onChange ? this.props.onChange(e, this) : null;
+    this.forceUpdate();
   }
   
   render() {

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react';
 import {
     ButtonToolbar,
     PageHeader,
@@ -11,6 +10,25 @@ import {
 import Button from "../button/Button";
 import ButtonToolbarSeparator from "../button/ButtonToolbarSeparator";
 import PagedTable from "../table/PagedTable";
+import { observer } from 'mobx-react';
+
+export const defaultLabels = {
+    searchTitle: 'Busca',
+    listTitle: 'Lista',
+    newTitle: 'Criação',
+    editTitle: 'Edição',
+    displayTitle: 'Consulta',
+    searchButton: 'Procurar',
+    newButton: 'Criar',
+    editButton: 'Editar',
+    displayButton: 'Consultar',
+    deleteButton: 'Excluir',
+    createButton: 'Criar',
+    updateButton: 'Salvar',
+    cloneButton: 'Clonar',
+    cancelButton: 'Cancelar',
+    backButton: 'Voltar'
+}
 
 @observer
 export default class BaseCrudView extends Component {
@@ -35,13 +53,38 @@ export default class BaseCrudView extends Component {
      *          toolbarPosition (null ou 0 - Em baixo; 1 - Em cima; 2 Em baixo e Em Cima )
      *      },
      *      editView {
-     *          components
+     *          components: [
+     *              "inputLogin",
+     *              {"inputName": 8},
+     *              {"inputPassword": 6, "inputTrocaSenhaProximoLogin": 6},
+     *              (dto, view) => <div>Teste</div>,
+     *              {"plantas": {xs: 6, sm: 10, md:9, lg: 8}, "depositos": {xs:6, sm:2, md:3, lg:4}},
+     *          ]
      *          commands,
      *          toolbarExtra,
      *          toolbarPosition (null ou 0 - Em baixo; 1 - Em cima; 2 Em baixo e Em Cima )
      *      },
      *      displayView {
      *          components
+     *      },
+     *      labels {
+     *          searchTitle: 'Busca',
+     *          listTitle: 'Lista',
+     *          newTitle: 'Criação',
+     *          editTitle: 'Edição',
+     *          displayTitle: 'Consulta',
+     *          searchButton: 'Procurar',
+     *          newButton: 'Criar',
+     *          editButton: 'Editar',
+     *          displayButton: 'Consultar',
+     *          deleteButton: 'Excluir',
+     *          activateButton: 'Ativar',
+     *          inactivateButton: 'Inativar',
+     *          createButton: 'Criar',
+     *          updateButton: 'Salvar',
+     *          cloneButton: 'Clonar',
+     *          cancelButton: 'Cancelar',
+     *          backButton: 'Voltar'
      *      }
      * }
      */
@@ -63,6 +106,7 @@ export default class BaseCrudView extends Component {
                 this.crudConfig.searchView.gridSizeLg = 3;
             }
         }
+        this.labels = {...defaultLabels, ...crudConfig.labels};
         this.searchButtonRef = null;
     }
 
@@ -80,13 +124,13 @@ export default class BaseCrudView extends Component {
 
     getListToolbarButtons() {
         var listToolbarButtons = [];
-        listToolbarButtons.push(<Button key={'novo'} onClick={this.crudStore.newCommand}><i className="fa fa-file-o"/> Novo</Button>);
+        listToolbarButtons.push(<Button key={'novo'} onClick={this.crudStore.newCommand}><i className="fa fa-file-o"/> {this.labels.newButton}</Button>);
         listToolbarButtons.push(<ButtonToolbarSeparator key={'separador'} />);        
-        listToolbarButtons.push(<Button key={'editar'} onClick={(e) => this.crudStore.editCommand()}><i className="fa fa-pencil"/> Editar</Button>);
+        listToolbarButtons.push(<Button key={'editar'} onClick={(e) => this.crudStore.editCommand()}><i className="fa fa-pencil"/> {this.labels.editButton}</Button>);
         if (this.crudConfig.displayView) {
-            listToolbarButtons.push(<Button key={'consultar'} onClick={(e) => this.crudStore.displayCommand()}><i className="fa fa-file-text-o"/> Consultar</Button>);
+            listToolbarButtons.push(<Button key={'consultar'} onClick={(e) => this.crudStore.displayCommand()}><i className="fa fa-file-text-o"/> {this.labels.displayButton}</Button>);
         }
-        listToolbarButtons.push(<Button key={'remover'} onClick={this.crudStore.deleteCommand}><i className="fa fa-close" /> Remover</Button>);
+        listToolbarButtons.push(<Button key={'remover'} onClick={this.crudStore.deleteCommand}><i className="fa fa-close" /> {this.labels.deleteButton}</Button>);
         return listToolbarButtons;
     }
 
@@ -103,19 +147,19 @@ export default class BaseCrudView extends Component {
         var crudStore = this.crudStore;
         var editButtons = [];
         if (crudStore.dto.id) {
-            editButtons.push(<Button key={'salvar'} onClick={crudStore.updateCommand} bsStyle="primary" disabled={crudStore.hasErrors}>Salvar</Button>);
+            editButtons.push(<Button key={'salvar'} onClick={crudStore.updateCommand} bsStyle="primary" disabled={crudStore.hasErrors}><i className="fa fa-save"/> {this.labels.updateButton}</Button>);
         }
         else {
-            editButtons.push(<Button key={'criar'} onClick={crudStore.createCommand} bsStyle="primary" disabled={crudStore.hasErrors}>Criar</Button>);
+            editButtons.push(<Button key={'criar'} onClick={crudStore.createCommand} bsStyle="primary" disabled={crudStore.hasErrors}><i className="fa fa-save"/> {this.labels.createButton}</Button>);
             editButtons.push(
                 <div style={{float: "right"}} >
-                    <Button onClick={crudStore.deleteCommand} bsStyle="danger">Remover</Button>
+                    <Button onClick={crudStore.deleteCommand} bsStyle="danger"><i className="fa fa-close" /> {this.labels.deleteButton}</Button>
                 </div>);
         }
         if (this.crudConfig.cloneOptionEnabled && dto.id) {
-            editButtons.push(<Button key={'clonar'} onClick={crudStore.cloneCommand}>Clonar</Button>);
+            editButtons.push(<Button key={'clonar'} onClick={crudStore.cloneCommand}><i className="fa fa-copy" /> {this.labels.cloneButton}</Button>);
         }
-        editButtons.push(<Button key={'cancelar'} onClick={crudStore.cancelCommand} bsStyle="link">Cancelar</Button>);
+        editButtons.push(<Button key={'cancelar'} onClick={crudStore.cancelCommand} bsStyle="link">{this.labels.cancelButton}</Button>);
         this.crudConfig.editView.commands && this.crudConfig.editView.commands.map(command => 
             editButtons.push(<Button onClick={crudStore[command.action].bind(crudStore, dto)} key={command.id}>{command.label}</Button>)
         );
@@ -134,7 +178,7 @@ export default class BaseCrudView extends Component {
     getViewToolbar() {
         return (
             <ButtonToolbar>
-                <Button key={'cancelar'} onClick={this.crudStore.cancelCommand} bsStyle="link">Cancelar</Button>
+                <Button key={'voltar'} onClick={this.crudStore.cancelCommand} bsStyle="link"><i className="fa fa-arrow-left"></i> {this.labels.backButton}</Button>
             </ButtonToolbar>
         );
     }
@@ -203,8 +247,46 @@ export default class BaseCrudView extends Component {
             selectionOnClickHandler = this.selectRadioChoice;
         }
 
-        console.log(view);
-        console.log(dto);
+        var doComponents = (line, view) => {
+            if (typeof line == 'string') {
+                return this[line](dto, view);
+            }
+            else if (typeof line == 'function') {
+                return line(dto, view);
+            }
+            else if (typeof line == 'object') {
+                return (
+                    <Grid fluid={true} style={{padding: "0px"}}>
+                        <Row>
+                        {Object.keys(line).map( key => {
+                            let gridConfig = line[key];
+                            let xs = 12;
+                            let sm = 12;
+                            let md = 12;
+                            let lg = 12;
+                            if (typeof gridConfig == 'number') {
+                                sm = gridConfig;
+                                md = gridConfig;
+                                lg = gridConfig;
+                            }
+                            else {
+                                xs = gridConfig.xs ? gridConfig.xs : xs;
+                                sm = gridConfig.sm ? gridConfig.sm : xs;
+                                md = gridConfig.md ? gridConfig.md : sm;
+                                lg = gridConfig.lg ? gridConfig.lg : md;
+                            }
+                            return (
+                                <Col xs={xs} sm={sm} md={md} lg={lg}>
+                                    {this[key](dto, view)}
+                                </Col>
+                            );
+                        })}   
+                        </Row>
+                    </Grid>
+                );
+            }
+            return null;
+        };
 
         return (
             <div className={"crud"}>
@@ -214,7 +296,7 @@ export default class BaseCrudView extends Component {
                         <Grid fluid={true}>
                             <Row>
                                 <Col md={searchView.gridSizeMd} lg={searchView.gridSizeLg}>
-                                    <Panel header={'Busca'} onKeyDown={this.searchOnEnter}>
+                                    <Panel header={this.labels.searchTitle} onKeyDown={this.searchOnEnter}>
                                         {searchViewComponents ? (
                                             <div>
                                                 {searchViewComponents.map(comp => this[comp](searchDto, 'search'))}
@@ -222,14 +304,14 @@ export default class BaseCrudView extends Component {
                                         : null }
                                         <div style={{marginTop: toolbarMargin}}>
                                             <ButtonToolbar>
-                                                <Button ref={(el) => this.searchButtonRef = el} onClick={this.crudStore.searchCommand} bsStyle="primary">Buscar</Button>
-                                                {!selectionType ? <Button onClick={this.crudStore.newCommand}>Novo</Button> : null}
+                                                <Button ref={(el) => this.searchButtonRef = el} onClick={this.crudStore.searchCommand} bsStyle="primary"><i className="fa fa-search"/> {this.labels.searchButton}</Button>
+                                                {!selectionType ? <Button onClick={this.crudStore.newCommand}>{this.labels.newButton}</Button> : null}
                                             </ButtonToolbar>
                                         </div>
                                     </Panel>
                                 </Col>
                                 <Col md={12 - searchView.gridSizeMd} lg={12 - searchView.gridSizeLg}>
-                                    <Panel header={'Lista'}>
+                                    <Panel header={this.labels.listTitle}>
                                         {listToolbarUp ?    
                                             <div style={{marginBottom: toolbarMargin}}>
                                                 {listToolbar} 
@@ -260,8 +342,8 @@ export default class BaseCrudView extends Component {
                         <Grid fluid={true}>
                             <Row>
                                 <Col md={12}>
-                                    <Panel header="Edição">
-                                        {editView && editView.components && editView.components.map(comp => this[comp](dto, dto.id == null ? 'create' : 'edit'))}
+                                    <Panel header={dto.id == null ? this.labels.newTitle : this.labels.editTitle}>
+                                        {editView && editView.components && editView.components.map(line => doComponents(line, dto.id == null ? 'create' : 'edit'))}
                                         <div style={{marginTop: toolbarMargin}}>
                                             {this.getEditToolbar()}
                                         </div>
@@ -276,8 +358,8 @@ export default class BaseCrudView extends Component {
                         <Grid fluid={true}>
                             <Row>
                                 <Col md={12}>
-                                    <Panel header="Consulta">
-                                        {displayView && displayView.components && displayView.components.map(comp => this[comp](dto, 'display'))}
+                                    <Panel header={this.labels.displayTitle}>
+                                        {displayView && displayView.components && displayView.components.map(line => doComponents(line, dto.id == null ? 'create' : 'display'))}
                                         <div style={{marginTop: toolbarMargin}}>
                                             {this.getViewToolbar()}
                                         </div>

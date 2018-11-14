@@ -34,6 +34,10 @@ export default class MultipleSelection extends Component {
      */
     delay: PropTypes.number,
     /**
+     * Se fecha automaticamente ao selecionar uma opção
+     */
+    closeOnSelect: PropTypes.bool,
+    /**
      * Informa se o campo está habilitado ou não
      */
     disabled: PropTypes.bool,
@@ -105,6 +109,7 @@ export default class MultipleSelection extends Component {
     autoload: false,
     threshold: 3,
     defaultValue: [],
+    closeOnSelect: false,
     disabled: false,
     ignoreCase: true,
     ignoreAccents: true,
@@ -226,6 +231,7 @@ export default class MultipleSelection extends Component {
       bean,
       name,
       autoload,
+      closeOnSelect,
       disabled,
       threshold,
       ignoreCase,
@@ -247,6 +253,7 @@ export default class MultipleSelection extends Component {
           className="MultipleSelection form-control"
            multi
            autoload={autoload}
+           closeOnSelect={closeOnSelect}
            disabled={disabled}
            value={selected}
            cache={false}

@@ -3,6 +3,7 @@ import ValidationService from '../input/Validation';
 import messages from '../core/Messages';
 
 export default class CrudStore {
+    entityName;
     @observable view;
     @observable searchDto;
     @observable page;
@@ -31,7 +32,8 @@ export default class CrudStore {
         }
     }
 
-    constructor(crudService) {
+    constructor(crudService, entityName) {
+        this.entityName = entityName;
         this.crudService = crudService;
         this.validationService = new ValidationService(this.errorsMap);
         this.view = 'search';
@@ -71,6 +73,8 @@ export default class CrudStore {
         }
     }
 
+    toStringDto(dto) {}
+
     initSearch(dto) {}
 
     preSearch(dto) {}
@@ -82,7 +86,7 @@ export default class CrudStore {
             Object.assign(dto, this.searchDto);
         }
         this.preSearch(dto);
-        this.crudService.page(this.page.size, this.page.number, dto)
+        return this.crudService.page(this.page.size, this.page.number, dto)
             .then(action(page => {
                 _self.page = page;
                 _self.view = 'search';
@@ -93,7 +97,7 @@ export default class CrudStore {
 
     @action searchCommand = () => {
         this.page.number = 0;
-        this.loadList();
+        return this.loadList();
     }
 
     preNew(dto) {}
@@ -111,9 +115,11 @@ export default class CrudStore {
 
     preCreate(dto) {}
 
-    preCreateCommand() {}
+    preCreateCommand(dto) {}
 
-    postCreateCommand() {}
+    postCreateCommand(dto) {   
+        messages.successMessageOnly(`${this.entityName} ${this.toStringDto(dto)} criado(a) com sucesso`);
+    }
 
     createCommand = async () => {
         try {
@@ -121,13 +127,13 @@ export default class CrudStore {
             var dto = this.crudService.newDto();
             Object.assign(dto, this.dto);
             this.preCreate(dto);
-            await this.preCreateCommand();
+            await this.preCreateCommand(dto);
             return this.crudService.create(dto)
                 .then(action(dto => {
                     _self.view = 'search';
                     _self.loadList();
                     _self.dto = null;
-                    _self.postCreateCommand();
+                    _self.postCreateCommand(dto);
                 }))
                 .catch(_self.errorHandler);
         } catch (error) {
@@ -137,9 +143,9 @@ export default class CrudStore {
 
     preDisplay(dto) {}
 
-    preDisplayCommand(listItem) {}
+    preDisplayCommand(dto) {}
 
-    postDisplayCommand(listItem) {}
+    postDisplayCommand(dto) {}
 
     displayCommand = async (listItem) => {
         try {
@@ -153,11 +159,9 @@ export default class CrudStore {
                 return this.crudService.getById(id)
                     .then(action((dto) => {
                         this.preDisplay(dto);
-                        console.log('displayDTO');
                         _self.view = 'display';
                         _self.dto = dto;
                         _self.postDisplayCommand(listItem);
-                        console.log(_self.dto);
                 }));
             }
             else {
@@ -170,9 +174,9 @@ export default class CrudStore {
 
     preEdit(dto) {}
 
-    preEditCommand(listItem) {}
+    preEditCommand(dto) {}
 
-    postEditCommand(listItem) {}
+    postEditCommand(dto) {}
 
     editCommand = async (listItem) => {
         try {
@@ -201,9 +205,11 @@ export default class CrudStore {
     
     preUpdate(dto) {}
 
-    preUpdateCommand() {}
+    preUpdateCommand(dto) {}
 
-    postUpdateCommand() {}
+    postUpdateCommand(dto) {
+        messages.successMessageOnly(`${this.entityName} ${this.toStringDto(dto)} atualizado(a) com sucesso`);
+    }
 
     updateCommand = async () => {
         try {
@@ -211,13 +217,13 @@ export default class CrudStore {
             var dto = this.crudService.newDto();
             Object.assign(dto, this.dto);
             this.preUpdate(dto);
-            await this.preUpdateCommand();
+            await this.preUpdateCommand(dto);
             return this.crudService.update(dto)
                 .then(action(dto => {
                     _self.view = 'search';
                     _self.loadList();
                     _self.dto = null;
-                    _self.postUpdateCommand();
+                    _self.postUpdateCommand(dto);
                 }))
                 .catch(_self.errorHandler);
         } catch (error) {
@@ -225,11 +231,13 @@ export default class CrudStore {
         }                
     }
 
-    preDelete(dto) {}
+    preDelete(id) {}
 
-    preDeleteCommand() {}
+    preDeleteCommand(dto) {}
 
-    postDeleteCommand() {}
+	postDeleteCommand(dto) {
+        messages.successMessageOnly(`${this.entityName} ${this.toStringDto(dto)} excluido(a) com sucesso`);
+    }
 
     deleteCommand = async () => {
         try {
@@ -244,18 +252,19 @@ export default class CrudStore {
 
             if (id != null) {            
                 this.preDelete(id);
-                await this.preDeleteCommand();
+                var deletedListItem = this.getSelectedListItem()
+                await this.preDeleteCommand(deletedListItem);
                 return this.crudService.delete(id)
                     .then(action(dto => {
                         _self.view = 'search';
                         _self.loadList();
                         _self.dto = null;
-                        _self.postDeleteCommand();
+                        _self.postDeleteCommand(deletedListItem);
                     }))
                     .catch(_self.errorHandler);
             }
             else {
-                messages.warningMessageOnly("Escolha pelo menos um item para remover");
+                messages.warningMessageOnly("Escolha pelo menos um item para excluir");
             }
         } catch (error) {
             this.errorHandler(error);
@@ -298,9 +307,11 @@ export default class CrudStore {
 
     preActivate(id) {}
 
-    preActivateCommand(listItem) {}
+    preActivateCommand(dto) {}
 
-    postActivateCommand(listItem) {}
+    postActivateCommand(dto) {
+        messages.successMessageOnly(`${this.entityName} ${this.toStringDto(dto)} ativado(a) com sucesso`);
+    }
     
     activateCommand = async (listItem) => {
         try {
@@ -314,11 +325,12 @@ export default class CrudStore {
             }
             if (id != null) {            
                 this.preActivate(id)
-                await this.preActivateCommand(listItem);
+                var activatedListItem = this.getSelectedListItem()
+                await this.preActivateCommand(activatedListItem);
                 return this.crudService.activate(id)
                     .then(action(dto => {
                         _self.loadList();
-                        _self.postActivateCommand(listItem);
+                        _self.postActivateCommand(activatedListItem);
                     }))
                     .catch(_self.errorHandler);
             }
@@ -332,9 +344,11 @@ export default class CrudStore {
 
     preInactivate(id) {}
 
-    preInactivateCommand(listItem) {}
+    preInactivateCommand(dto) {}
 
-    postInactivateCommand(listItem) {}
+    postInactivateCommand(dto) {
+        messages.successMessageOnly(`${this.entityName} ${this.toStringDto(dto)} inativado(a) com sucesso`);
+    }
 
     inactivateCommand = async (listItem) => {
         try {
@@ -348,11 +362,12 @@ export default class CrudStore {
             }
             if (id != null) {            
                 this.preInactivate(id)
-                await this.preInactivateCommand(listItem);
+                var inactivatedListItem = this.getSelectedListItem()
+                await this.preInactivateCommand(inactivatedListItem);
                 return this.crudService.inactivate(id)
                     .then(action(dto => {
                         _self.loadList();
-                        _self.postInactivateCommand(listItem);
+                        _self.postInactivateCommand(inactivatedListItem);
                     }))
                     .catch(_self.errorHandler);
             }
@@ -367,7 +382,14 @@ export default class CrudStore {
     @action radioChoice = (idx, id) => {
         this.radioChoiceIdx = idx;
         this.radioChoiceId = id;
-    }    
+    }
+
+    getSelectedListItem() {
+        if (this.radioChoiceIdx != null) {
+            return this.page.content[this.radioChoiceIdx];
+        }
+        return null;
+    }
 
     // Validação //
     _validationReactionConfig = reaction(

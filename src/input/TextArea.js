@@ -54,28 +54,17 @@ export default class TextArea extends Component {
      */
     onChange: PropTypes.func,
     /**
-     * Modo indica a sintaxe, caso haja uma a ser usada para efeito de colorização do texto. São os modos
-     * do Codemirror, usado como base para essa componente. Pré carregados, disponíveis inicialmente são:
-     * ```css, groovy, htmlmixed, javascript, jinja2, markdown, shell, sql, yaml, xml```
-     */
-    mode: PropTypes.string,
-    /**
      * O numero de linhas que uma caixa de texto deve ter. Funciona apenas para caixas simples, sem modo
      * definido.
      */
-    rows: PropTypes.number,
-    /**
-     * Se deve ou não mostrar o número da linha no editor
-     */
-    showLineNumbers: PropTypes.bool
+    rows: PropTypes.number
   };
 
   static defaultProps = {
     upperCase: false,
     defaultValue: "",
     disabled: false,
-    mode: "",
-    showLineNumbers: false,
+    rows: 3,
     onChange: () => {}
   };
   
@@ -99,53 +88,39 @@ export default class TextArea extends Component {
   setValue = (value) => {
     let {
       bean,
-      name,
-      onChange,
-      upperCase
+      name
     } = this.props;
     introspector.setValue(bean, name, this.treatUpperCaseValue(value));
   }
 
-  onChangeHandler = (text) => {
+  onChangeHandler = (event) => {
+    let text = event.target.value;
     this.setValue(text);
-    this.props.onChange(text, this);
+    this.props.onChange && this.props.onChange(text, this);
     this.forceUpdate();
   }
-  
+
   onKeyPressHandler = (e) => {
     this.props.onKeyPress(e, this);
   }
   
   render() {
-    let {
+    const {
       onChange,
       onKeyPress,
       disabled,
-      mode,
-      showLineNumbers,
       bean,
       name,
+      rows,
       defaultValue,
       upperCase,
       ...otherProps
     } = this.props;
-    let dynprops = { ...otherProps }
     if (disabled) {
-      dynprops.disabled = "disabled";
+      otherProps.disabled = "disabled";
     }
     return (
-      <div className="form-control" style={{height: "initial"}}>
-        {mode ? 
-          <CodeMirror            
-            value={this.getValue()}
-            onChange={this.onChangeHandler}
-            options={{mode: mode, lineNumbers: showLineNumbers }}   
-            {...dynprops}
-            />
-        :  
-          <textarea onChange={this.onChangeHandler} {...dynprops}>{this.getValue()}</textarea>
-        }
-      </div>
+      <textarea class="form-control" rows={rows} onChange={this.onChangeHandler} {...otherProps} value={this.getValue() || ""} />
     )
   }
 }

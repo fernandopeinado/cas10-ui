@@ -26,17 +26,17 @@ export default class Output extends Component {
      * icone: v verde ou x vermelho em icones (default)
      * sim_nao: para Sim ou Não
      */
-    booleanFormat: PropTypes.string,
+    booleanFormat: PropTypes.oneOf(['icone', 'sim_nao']),
     /**
      * true se for para mostrar a data. 
-     * Se dateFormat e timeFormat forem null ou true a data completa será mostrada
+     * Se date e time forem null ou true a data completa será mostrada, se valor for uma data
      */
-    dateFormat: PropTypes.bool,
+    date: PropTypes.bool,
     /**
      * true se for mostrar o horário. 
-     * Se dateFormat e timeFormat forem null ou true a data completa será mostrada
+     * Se date e time forem null ou true a data completa será mostrada, se valor for uma data
      */
-    timeFormat: PropTypes.bool,
+    time: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -48,8 +48,8 @@ export default class Output extends Component {
       value,
       locale,
       booleanFormat,
-      dateFormat,
-      timeFormat
+      date,
+      time
     } = this.props;
 
     var printedValue = value || "";
@@ -63,16 +63,28 @@ export default class Output extends Component {
                 printedValue = value ? <i className="fa fa-check" style={{color: "green"}} /> : <i className="fa fa-close" style={{color: "red"}} />
             }
         }
-        else if (value.constructor === 'Date') {
-            if ((dateFormat == null && timeFormat == null) || (dateFormat && timeFormat)) {
-                printedValue = value.toLocaleString(locale);
+        else if (value.constructor === Date || date || time) {
+            printedValue = value.toString();
+            if (typeof value === 'string' && value) {
+                value = new Date(value);
             }
-            else if (dateFormat) {
-                printedValue = value.toLocaleDateString(locale);
+            if (value.constructor === Date) {
+                if ((date == null && time == null) || (date && time)) {
+                    printedValue = value.toLocaleString(locale);
+                }
+                else if (date) {
+                    printedValue = value.toLocaleDateString(locale);
+                }
+                else if (time) {
+                    printedValue = value.toLocaleTimeString(locale);
+                }
             }
-            else if (timeFormat) {
-                printedValue = value.toLocaleTimeString(locale);
-            }
+        }
+        else if (typeof value === 'string') {
+            printedValue = value;
+        }
+        else if (Array.isArray(value)) {
+            printedValue = value.map(item => <div key={value}>{value}</div>);
         }
     }
 
