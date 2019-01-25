@@ -126,6 +126,10 @@ export default class TextInput extends Component {
   onKeyPressHandler = (e) => {
     this.props.onKeyPress ? this.props.onKeyPress(e, this) : null;
   }
+
+  focus() {
+    this.textInput.focus();
+  }  
   
   render() {
     let {
@@ -146,6 +150,7 @@ export default class TextInput extends Component {
     }
     return (
       <input type={type}
+          ref={(input) => { this.textInput = input; }}
           className="form-control"
           value={this.getValue()}
           onChange={this.onChangeHandler}

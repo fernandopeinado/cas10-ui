@@ -4709,6 +4709,11 @@ mobx@~5.5.0:
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-5.5.2.tgz#4f5d751b77807a88218caede92198679a0e18a4a"
   integrity sha512-2/nZyxET6T2BvFDLYGSf5sMJ1N9wdV9zHtAkfkk+hzJL+kzQQ/vLdPS5UmwNNBqH1HF6FpIcZR+1BJ/jc3YrMQ==
 
+moment@^2.22.2:
+  version "2.23.0"
+  resolved "http://nexus.touchtec.com.br/content/groups/npm-all/moment/-/moment-2.23.0.tgz#759ea491ac97d54bac5ad776996e2a58cc1bc225"
+  integrity sha512-3IE39bHVqFbWWaPOMHZF98Q9c3LDKGTmypMiTM2QygGXXElkFWIH7GxfmlwmY2vwa+wmNsoYZmG2iusf1ZjJoA==
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/move-concurrently/-/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"

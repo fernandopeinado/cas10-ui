@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import introspector from '../core/Introspector';
-import messages from '../core/Messages';
+import "react-select/dist/react-select.css";
+import "./Selection.css";
 
 /**
  * Caixa de Seleção simples.
  * 
  * Uso básico:
  * ~~~js
- * <OptionsSelection bean={bean} name="sexo" options={sexos}></Selection>
+ * <OptionsSelection bean={bean} name="sexo" options={sexos}></OptionsSelection>
  * ~~~
  */
 export default class OptionsSelection extends Component {

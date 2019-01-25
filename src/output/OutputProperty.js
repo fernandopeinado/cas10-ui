@@ -44,6 +44,15 @@ export default class OutputProperty extends Component {
      * Se dateFormat e timeFormat forem null ou true a data completa será mostrada
      */
     time: PropTypes.bool,
+    /**
+     * o formato para parsear a data (ver moment.js)      
+     */
+    dateParseFormat: PropTypes.string,   
+    /**
+     * o formato para customizar a exibição da data. 
+     * Deve seguir a formatação do moment.js (ver moment.js)           
+     */
+    dateDisplayFormat: PropTypes.string,            
   };
 
   render() {

@@ -8,6 +8,7 @@ export default class PagedTable extends Component {
 
   static propTypes = {
     striped: PropTypes.bool,
+    condensed: PropTypes.bool,
     /**
      * Os tamanhos das colunas. Se preenchido força o tamanho, caso contrário fica automático.
      */

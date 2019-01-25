@@ -86,7 +86,7 @@ export class Regex extends Validator {
     }
 
     validate(value, message) {
-        if (value != null && !this.regexp.test(value)) {
+        if (value != null && value != "" && !this.regexp.test(value)) {
             return message ? message : this.defaultMessage;
         }
         return null;

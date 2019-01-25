@@ -8,6 +8,7 @@ export default class Table extends Component {
 
   static propTypes = {
     striped: PropTypes.bool,
+    condensed: PropTypes.bool,
     sizes: PropTypes.array,
     aligns: PropTypes.array,
     titles: PropTypes.array.isRequired,
@@ -39,7 +40,8 @@ export default class Table extends Component {
       titles,
       properties,
       footer,
-      striped
+      striped,
+      condensed
     } = this.props;
     const {
       list
@@ -124,7 +126,7 @@ export default class Table extends Component {
     }
     
     return (
-      <Bootstrap.Table responsive hover striped>
+      <Bootstrap.Table responsive hover striped={striped} condensed={condensed}>
         {buildHeader(titles)}
         {buildBody(properties, list)}
         {buildFooter(titles, footer)}
