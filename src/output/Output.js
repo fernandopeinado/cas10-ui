@@ -59,7 +59,8 @@ export default class Output extends Component {
       booleanFormat,
       date,      
       time,
-      dateDisplayFormat      
+      dateDisplayFormat,
+      ...otherProps    
     } = this.props;
 
     var printedValue = value || "";
@@ -85,7 +86,7 @@ export default class Output extends Component {
     }
 
     return (
-      <span>{printedValue}</span>
+      <span {...otherProps}>{printedValue}</span>
     );
   }
 
@@ -95,7 +96,7 @@ export default class Output extends Component {
         date,        
         time,
         dateParseFormat,
-        dateDisplayFormat
+        dateDisplayFormat        
       } = this.props;
         
     let printedValue = value.toString();

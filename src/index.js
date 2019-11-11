@@ -49,3 +49,9 @@ export { default as OutputProperty } from './output/OutputProperty';
 // Table
 export { default as PagedTable } from './table/PagedTable';
 export { default as Table } from './table/Table';
+
+// Theme
+export { default as Color } from './theme/color';
+export { default as theme } from './theme/defaultTheme';
+export { default as getShadow } from './theme/shadows';
+export { default as Theme } from './theme/Theme';
